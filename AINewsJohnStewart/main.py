@@ -1,54 +1,78 @@
-import os  
-from dotenv import load_dotenv  
-from autogen import GroupChat, GroupChatManager  
-from AINewsJohnStewart.agents.voice_actor import VoiceActorAgent
-from AINewsJohnStewart.agents.scout import ScoutAgent  
-from AINewsJohnStewart.agents.satirist import SatiristAgent  
-from utils.logger import setup_logger  
+import os
+from dotenv import load_dotenv
+from autogen import GroupChat, GroupChatManager
+from AINewsJohnStewart.agents.scout.scout import ScoutAgent
+from AINewsJohnStewart.agents.satirist.satirist import SatiristAgent
+from AINewsJohnStewart.utils.logger import setup_logger
 
-load_dotenv()  
-logger = setup_logger()  
+load_dotenv()
+logger = setup_logger(__name__)
 
 def main():
     try:
-        # Initialize agents with clear roles
+        # Initialize agents
         scout = ScoutAgent()
         satirist = SatiristAgent()
-        voice_actor = VoiceActorAgent()
 
-        # Configure hierarchical chat
-        groupchat = GroupChat(
-            agents=[scout, satirist, voice_actor],
-            messages=[],
-            max_round=8,  # Scout → Satirist → VoiceActor
-            speaker_selection_method="round_robin"  # Simple turn-based
+        # Create initial message for the workflow
+        initial_message = {
+            "role": "user",
+            "content": """Please analyze AI news with these parameters:
+            - Query: artificial intelligence
+            - Max articles: 5
+            - Min length: 100 words
+            - Exclude domains: clickbait.com, lowquality.ai
+            
+            Analyze each article for novelty, hype, and absurdity."""
+        }
+
+        # Configure group chat
+        chat = GroupChat(
+            agents=[scout, satirist],
+            messages=[initial_message],
+            max_round=4,
+            speaker_selection_method="round_robin"
         )
         
+        # Initialize chat manager
         manager = GroupChatManager(
-            groupchat=groupchat,
-            llm_config={"timeout": 45}
-        )
-
-        # Initiate workflow with structured data request
-        scout.send(
-            {
-                "request_type": "news_scrape",
-                "parameters": {
-                    "query": "AI hype",
-                    "max_articles": 5
+            groupchat=chat,
+            llm_config={
+                "config_list": [
+                    {
+                        "model": "claude-3-sonnet-20240229",
+                        "api_key": os.getenv("ANTHROPIC_API_KEY")
+                    }
+                ],
+                "timeout": 45,
+                "error_handling": {
+                    "max_retries": 2,
+                    "retry_delay": 5
                 }
-            },
-            manager,
-            request_reply=True
+            }
         )
 
-        # Post-process audio file
-        final_message = groupchat.messages[-1]
-        if "audio_file" in final_message:
-            logger.info(f"Final output: {final_message['audio_file']}")
+        # Initiate the workflow
+        manager.initiate_chat(
+            manager=scout,
+            message=initial_message["content"]
+        )
+
+        # Process final results
+        if manager.groupchat.messages:
+            final_message = manager.groupchat.messages[-1]
+            if isinstance(final_message, dict) and "content" in final_message:
+                logger.info("Workflow completed successfully")
+                logger.info(f"Generated script: {final_message['content']}")
+            else:
+                logger.warning("No valid script generated in final message")
+        else:
+            logger.warning("No messages generated in the conversation")
             
     except Exception as e:
-        logger.error(f"Fatal workflow error: {str(e)}")
+        logger.error(f"Workflow error: {str(e)}", exc_info=True)
+        raise
 
-if __name__ == "__main__":  
-    main()  
+if __name__ == "__main__":
+    main()
+    

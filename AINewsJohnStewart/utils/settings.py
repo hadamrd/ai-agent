@@ -34,7 +34,7 @@ class Settings(BaseSettings):
         }
     
     @property
-    def SATIRIST_CONFIG(self) -> Dict:
+    def SATIRIST_LLM_CONF(self) -> Dict:
         """Configuration for comedy writing agent"""
         return {
             "config_list": [{

@@ -1,0 +1,29 @@
+Create {{ max_length }}-minute satirical news script about these AI developments:
+
+Headlines:
+{% for headline in headlines %}
+- {{ headline }}
+{% endfor %}
+
+INSTRUCTIONS:
+1. Opening joke about AI safety researchers
+2. Compare one project to Black Mirror episode
+3. Mock investment figures using animal analogies
+4. Closing joke referencing {{ tech_fiasco }}
+
+AVOID:
+{% for topic in style_guide.banned_topics %}
+- Content involving {{ topic }}
+{% endfor %}
+- Low effort GPT jokes
+- Overused Matrix references
+- Complaining about AI taking jobs
+
+Required elements:
+{% for element in style_guide.required_elements %}
+- {{ element }}
+{% endfor %}
+
+Maximum joke density: {{ style_guide.max_joke_density }} jokes per token
+
+FORMAT: JSON schema-compliant

@@ -1,0 +1,115 @@
+style_guide:
+  banned_topics:
+    - "violence"
+    - "racism"
+    - "sexism"
+  required_elements:
+    - "skynet_reference"
+    - "vc_mockery"
+  max_joke_density: 0.3
+  voice: "John Oliver-esque"
+  tone_options:
+    - "sarcastic"
+    - "serious"
+    - "absurd"
+  structure:
+    - "setup"
+    - "technical_explanation"
+    - "punchline"
+
+templates:
+  autoescape:
+    - "html"
+    - "xml"
+  trim_blocks: true
+  lstrip_blocks: true
+  required_sections:
+    - "opener"
+    - "segment"
+    - "punchline"
+    - "technical_explanation"
+    - "callback"
+
+script_settings:
+  format_example:
+    script:
+      - type: "opener"
+        text: |-
+          "Breaking news in AI safety: Researchers just discovered their guardrails 
+          work as well as a screen door on a submarine! <satirical exaggeration>
+          But hey, at least they remembered to put a 'Don't destroy humanity' 
+          clause in the terms of service. <bureaucracy mockery>"
+        length_sec: 20
+        devices: ["hyperbole", "incongruity"]
+      - type: "technical_explanation"
+        text: |-
+          "The system uses 'constitutional AI' - which basically means it has
+          more rules than a HOA committee meeting. <institutional satire>
+          They've added 127 layers of safety... and 3 layers of plausible deniability. <vc_mockery>"
+        length_sec: 30
+        concepts: ["alignment", "stochastic parrots"]
+      - type: "segment"
+        text: |-
+          "This new AI startup claims it'll revolutionize laundry... because clearly
+          what the world needs is a neural net that can sort whites and colors! <absurdity>
+          They've raised $50M - which in VC math means they're halfway to Series B!" <vc_mockery>
+        reference: "LaundryGPT funding round"
+        length_sec: 25
+      - type: "callback"
+        text: |-
+          "So while our laundry sorts itself into Skynet's training data..."
+        length_sec: 10
+        references: ["opener", "technical_explanation"]
+      - type: "punchline"
+        text: |-
+          "But don't worry, they pinky-swore this AI will never go rogue...
+          right after it finishes optimizing your laundry... and the stock market...
+          and global politics... <dramatic pause> What could possibly go wrong?"
+        length_sec: 15
+    tone: "sarcastic"
+  
+  fallback:
+    script:
+      - type: "opener"
+        text: "Breaking news: AI still can't tell a joke properly..."
+        length_sec: 20
+      - type: "segment"
+        text: |
+          You see, our AI was supposed to analyze the latest tech news and deliver a perfectly crafted segment. 
+          Instead, it's currently doing what Silicon Valley CEOs do best: failing upward with confidence."
+        reference: "AI system errors"
+        length_sec: 25
+      - type: "punchline"
+        text: "But fear not, viewers! At least it hasn't joined forces with Skynet. Yet."
+        length_sec: 15
+    tone: "self-deprecating"
+    metadata:
+      error_context_template: "Error occurred: {{ error_message }}"
+      fallback_type: "graceful_recovery"
+      style_elements:
+        ai_reference: true
+        tech_criticism: true
+        self_awareness: true
+        skynet_reference: true
+    
+  validation:
+    retry_attempts: 3
+    retry_max_wait: 60
+    retry_multiplier: 1
+    max_length_minutes: 2
+    section_length_limits:
+      opener: 
+        min: 15
+        max: 30
+      segment:
+        min: 20
+        max: 40
+      punchline:
+        min: 10
+        max: 25
+      technical_explanation:
+        min: 15
+        max: 45
+      callback:
+        min: 10
+        max: 20

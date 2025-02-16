@@ -1,40 +1,39 @@
-[project]
+[tool.poetry]
 name = "AINewsJohnStewart"
 version = "0.1.0"
 description = "AI-powered news satire generator"
-requires-python = ">=3.8"
-dependencies = [
-    "pyautogen>=0.7.4",
-    "python-dotenv>=1.0.0",
-    "anthropic>=0.13.0",
-    "requests>=2.31.0",
-    "pillow>=10.0.1",
-    "pydantic-settings>=2.1.0",
-    "tenacity>=8.2.3",
-    "pytest>=7.4.0",
-    "pytest-mock>=3.11.1"
-]
+authors = ["Your Name <your.email@example.com>"]
+packages = [{include = "AINewsJohnStewart"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.14"
+pyautogen = ">=0.7.4"
+python-dotenv = ">=1.0.0"
+anthropic = ">=0.13.0"
+requests = ">=2.31.0"
+pillow = ">=10.0.1"
+pydantic-settings = ">=2.1.0"
+tenacity = ">=8.2.3"
+jinja2 = ">=3.1.5"
+PyYAML = "^6.0.1"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.11.1"
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+test-satirist = "scripts:run_satirist_tests"
 
 [tool.pytest.ini_options]
-pythonpath = [
-    "."
-]
-testpaths = [
-    "AINewsJohnStewart/tests",
-]
+testpaths = ["AINewsJohnStewart/tests"]
+python_files = "test_*.py"
+addopts = "-v --cov=AINewsJohnStewart/agents/satirist --cov-report=term-missing"
+pythonpath = ["."]
 
 [tool.autogen]
-llm_cache_path = "./data/llm_cache.db"  # Reuse responses
-
-[project.optional-dependencies]
-test = [
-    "pytest>=7.4.0",
-    "pytest-mock>=3.11.1",
-]
-
-[tool.hatch.build.targets.wheel]
-packages = ["AINewsJohnStewart"]
+llm_cache_path = "./data/llm_cache.db"

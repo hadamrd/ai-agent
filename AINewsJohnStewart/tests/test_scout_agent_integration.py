@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from AINewsJohnStewart.agents.scout import ScoutAgent
+from AINewsJohnStewart.agents.scout.scout import ScoutAgent
     
 class TestScoutAgentIntegration(unittest.TestCase):
     """Integration tests for ScoutAgent with real APIs"""

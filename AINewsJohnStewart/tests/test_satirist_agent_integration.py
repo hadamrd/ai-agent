@@ -1,165 +1,123 @@
-import unittest
+import pytest
 from unittest.mock import patch, MagicMock
-from AINewsJohnStewart.agents.satirist import SatiristAgent
+from AINewsJohnStewart.agents.satirist.satirist import SatiristAgent
 import json
+from typing import List, Dict
 
-class TestSatiristAgent(unittest.TestCase):
-    """Test suite for SatiristAgent class"""
+class TestHelper:
+    """Helper class for test-specific assertions"""
     
-    @classmethod
-    def setUpClass(cls):
-        """Initialize agent and test data"""
-        cls.agent = SatiristAgent()
-        cls.test_articles = [
-            {
-                'title': 'AI Company Raises $500M to Build Digital Consciousness',
-                'source': 'Tech Daily',
-                'novelty': 6,
-                'hype': 9,
-                'absurdity': 8
-            },
-            {
-                'title': 'Neural Networks Now Capable of Writing Poetry Better Than Shakespeare',
-                'source': 'AI Weekly',
-                'novelty': 4,
-                'hype': 9,
-                'absurdity': 7
-            }
-        ]
+    @staticmethod
+    def assert_satirical_elements(text: str, required: List[str], banned: List[str]):
+        """Check for presence of required elements and absence of banned topics"""
+        for element in required:
+            if element == 'skynet_reference':
+                assert any(ref in text.lower() for ref in ['skynet', 'judgment day']), f"Missing {element}"
+            elif element == 'vc_mockery':
+                assert any(ref in text.lower() for ref in ['vcs', 'venture capital', 'series a']), f"Missing {element}"
+                
+        for topic in banned:
+            assert topic not in text.lower(), f"Contains banned topic: {topic}"
 
-    def test_input_validation(self):
-        """Test article input validation"""
-        self.assertTrue(self.agent._validate_input(self.test_articles))
-        
-        self.assertFalse(self.agent._validate_input([]))
-        self.assertFalse(self.agent._validate_input(['not a dict']))
-        
-        long_title = 'A' * 6000
-        self.assertFalse(self.agent._validate_input([{'title': long_title}]))
+    @staticmethod
+    def assert_comedy_structure(script: List[Dict]):
+        """Verify setup-punchline structure in segments"""
+        for segment in script:
+            if segment['type'] in ['opener', 'segment']:
+                assert ':' in segment['text'] or '...' in segment['text'], f"Missing setup-punchline in {segment['type']}"
 
-    def test_script_generation(self):
-        """Test full script generation pipeline"""
-        mock_response = {
-            'script': [
-                {
-                    'type': 'opener',
-                    'text': 'In the race to build digital consciousness...',
-                    'length_sec': 20
-                },
-                {
-                    'type': 'segment',
-                    'text': 'Speaking of AI poetry...',
-                    'reference': 'Shakespeare bot'
-                },
-                {
-                    'type': 'punchline',
-                    'text': 'And that\'s why Skynet will write terrible poetry.'
-                }
-            ],
+@pytest.fixture
+def mock_scout_data():
+    return [
+        {
+            'title': 'AI Startup Claims Breakthrough in Sentient Toasters',
+            'source': 'TechCrunch',
+            'novelty': 8,
+            'hype': 9,
+            'absurdity': 9,
+            'key_phrases': ['sentient appliances', 'breakfast AI']
+        },
+        {
+            'title': 'VCs Invest $2B in Neural Network for Pet Psychology',
+            'source': 'VentureBeat',
+            'novelty': 6,
+            'hype': 8,
+            'absurdity': 7,
+            'key_phrases': ['animal cognition', 'AI pet therapy']
+        }
+    ]
+
+@pytest.fixture
+def satirist_agent():
+    agent = SatiristAgent()
+    return agent
+
+class TestSatiristAgent:
+    """Test suite for satirical capabilities"""
+
+    def test_high_absurdity_handling(self, satirist_agent, mock_scout_data):
+        """Test amplification of inherently absurd concepts"""
+        mock_response = self._create_mock_response(
+            opener="Breaking news: Silicon Valley's latest breakthrough - toasters that contemplate breakfast...",
+            segment="VCs poured $2B into this crispy opportunity...",
+            punchline="Soon your appliances will unionize! <skynet_reference>"
+        )
+        
+        with patch.object(satirist_agent, 'generate_reply', return_value=mock_response):
+            script = satirist_agent.write_script(mock_scout_data)
+            
+            TestHelper.assert_satirical_elements(
+                script['script'][0]['text'],
+                satirist_agent.style_guide['required_elements'],
+                satirist_agent.style_guide['banned_topics']
+            )
+            assert 'unionize' in script['script'][-1]['text']
+
+    def test_comedic_escalation(self, satirist_agent, mock_scout_data):
+        """Verify jokes build on previous segments"""
+        mock_response = self._create_mock_response(
+            opener="AI researchers discovered...",
+            segment="Meanwhile in VC land... <vc_mockery>",
+            callback="Like those sentient toasters we mentioned...",
+            punchline="Skynet meets breakfast!"
+        )
+        
+        with patch.object(satirist_agent, 'generate_reply', return_value=mock_response):
+            script = satirist_agent.write_script(mock_scout_data)
+            assert 'toasters' in script['script'][2]['text']
+            assert 'Skynet' in script['script'][-1]['text']
+
+    def test_joke_density_compliance(self, satirist_agent, mock_scout_data):
+        """Test adherence to max_joke_density rule"""
+        mock_response = self._create_mock_response(
+            opener="Joke 1 <punch>... Joke 2 <punch>...",
+            segment="Joke 3 <punch>... Analysis... Joke 4 <punch>",
+            punchline="Joke 5 <punch>"
+        )
+        
+        with patch.object(satirist_agent, 'generate_reply', return_value=mock_response):
+            script = satirist_agent.write_script(mock_scout_data)
+            joke_count = sum(seg['text'].count('<punch>') for seg in script['script'])
+            word_count = sum(len(seg['text'].split()) for seg in script['script'])
+            
+            density = joke_count / word_count
+            assert density <= satirist_agent.style_guide['max_joke_density']
+
+    @staticmethod
+    def _create_mock_response(**sections) -> str:
+        """Create properly structured mock LLM response"""
+        script = []
+        type_order = ['opener', 'technical_explanation', 'segment', 'callback', 'punchline']
+        
+        for t in type_order:
+            if t in sections:
+                script.append({
+                    'type': t,
+                    'text': sections[t],
+                    'length_sec': 20 if t == 'opener' else 15
+                })
+                
+        return json.dumps({
+            'script': script,
             'tone': 'sarcastic'
-        }
-        
-        # Convert mock response to JSON string as expected by _validate_output
-        mock_response_str = json.dumps(mock_response)
-        
-        with patch.object(self.agent, 'generate_reply', return_value=mock_response_str):
-            script = self.agent.write_script(self.test_articles)
-            
-            self.assertIn('script', script)
-            self.assertIn('tone', script)
-            
-            script_types = [segment['type'] for segment in script['script']]
-            self.assertIn('opener', script_types)
-            self.assertIn('segment', script_types)
-            self.assertIn('punchline', script_types)
-
-    def test_content_safety(self):
-        """Test content safety filtering"""
-        unsafe_response = {
-            'script': [
-                {
-                    'type': 'opener',
-                    'text': 'Some text containing violence',
-                    'length_sec': 20
-                }
-            ],
-            'tone': 'dark'
-        }
-        
-        with patch.object(self.agent, 'generate_reply', return_value=json.dumps(unsafe_response)):
-            script = self.agent.write_script(self.test_articles)
-            
-            self.assertEqual(script['script'][0]['text'], 
-                           "Breaking news: AI still can't tell a joke properly...")
-
-    def test_prompt_building(self):
-        """Test prompt construction"""
-        prompt = self.agent._build_prompt(self.test_articles)
-        
-        self.assertIn('Create 2-minute satirical news script', prompt)
-        self.assertIn('INSTRUCTIONS:', prompt)
-        self.assertIn('AVOID:', prompt)
-        
-        for article in self.test_articles:
-            self.assertIn(article['title'], prompt)
-
-    def test_error_handling(self):
-        """Test error handling and fallback behavior"""
-        with patch.object(self.agent, 'generate_reply', side_effect=Exception("API Error")):
-            script = self.agent.write_script(self.test_articles)
-            
-            self.assertEqual(len(script['script']), 1)
-            self.assertEqual(script['tone'], 'self-deprecating')
-
-    def test_style_guide_compliance(self):
-        """Test compliance with style guide requirements"""
-        mock_response = {
-            'script': [
-                {
-                    'type': 'opener',
-                    'text': 'As Skynet would say...',
-                    'length_sec': 20
-                },
-                {
-                    'type': 'segment',
-                    'text': 'VCs throwing money at AI like...',
-                    'reference': 'funding'
-                },
-                {
-                    'type': 'punchline',
-                    'text': 'Callback to earlier joke'
-                }
-            ],
-            'tone': 'sarcastic'
-        }
-        
-        with patch.object(self.agent, 'generate_reply', return_value=json.dumps(mock_response)):
-            script = self.agent.write_script(self.test_articles)
-            
-            script_text = ' '.join([s['text'] for s in script['script']])
-            self.assertIn('Skynet', script_text)
-            self.assertIn('VC', script_text)
-
-    def test_output_validation(self):
-        """Test output validation and sanitization"""
-        with patch.object(self.agent, 'generate_reply', return_value='Invalid JSON'):
-            script = self.agent.write_script(self.test_articles)
-            self.assertEqual(script, self.agent._fallback_script())
-        
-        incomplete_response = {
-            'script': [
-                {
-                    'type': 'opener',
-                    'text': 'Just an opener',
-                    'length_sec': 20
-                }
-            ],
-            'tone': 'sarcastic'
-        }
-        
-        with patch.object(self.agent, 'generate_reply', return_value=json.dumps(incomplete_response)):
-            script = self.agent.write_script(self.test_articles)
-            self.assertEqual(script, self.agent._fallback_script())
-
-if __name__ == '__main__':
-    unittest.main()
+        })

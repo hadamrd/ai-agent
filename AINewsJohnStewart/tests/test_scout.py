@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock, call
 import json
 from requests.exceptions import RequestException
-from AINewsJohnStewart.agents.scout import ScoutAgent, NewsAPIRateLimiter
+from AINewsJohnStewart.agents.scout.scout import ScoutAgent, NewsAPIRateLimiter
 import logging
 
 

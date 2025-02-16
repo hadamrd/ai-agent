@@ -1,0 +1,22 @@
+{
+    "valid": {% if script_data and script_data.script %}
+      {% set sections = script_data.script|map(attribute='type')|list %}
+      {% set has_required = required_sections.issubset(sections) %}
+      {% set has_banned = banned_topics|select('lower')|any(topic in script_data|string|lower) %}
+      {{ has_required and not has_banned|string|lower }}
+    {% else %}
+      false
+    {% endif %},
+    "errors": [
+      {% if not script_data or not script_data.script %}
+        "Missing script data"
+      {% endif %}
+      {% if not has_required %}
+        ,"Missing required sections: {{ required_sections - sections|set }}"
+      {% endif %}
+      {% if has_banned %}
+        ,"Contains banned topics: {{ banned_topics|select('lower')|select('in', script_data|string|lower)|list }}"
+      {% endif %}
+    ]
+  }
+  
