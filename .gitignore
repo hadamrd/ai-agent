@@ -1,0 +1,5 @@
+.venv
+AINewsJohnStewart.egg-info
+.env
+**/__pycache__
+**/*.pyc

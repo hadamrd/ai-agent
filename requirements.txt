@@ -1,0 +1,8 @@
+pyautogen
+python-dotenv
+requests
+openai 
+Pillow 
+elevenlabs
+tenacity
+pydantic_settings

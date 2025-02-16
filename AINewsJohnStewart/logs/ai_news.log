@@ -1,0 +1,330 @@
+2025-02-16 06:53:59,154 - ERROR - Analysis failed: API Error
+2025-02-16 06:53:59,465 - ERROR - Analysis failed: Error parsing response: Missing required fields: {'novelty', 'hype', 'absurdity'}
+2025-02-16 06:55:49,761 - INFO - Analyzing headline: Test Headline
+2025-02-16 06:55:49,761 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nTest Headline'}]
+2025-02-16 06:55:49,761 - ERROR - Analysis failed: API Error
+Traceback (most recent call last):
+  File "/root/ai-agent/AINewsJohnStewart/agents/scout.py", line 129, in analyze_article
+    response = self.generate_reply(messages, sender=None)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+Exception: API Error
+2025-02-16 06:55:49,763 - INFO - Analyzing headline: Revolutionary AI Achieves Human-Level Intelligence, Changes Everything
+2025-02-16 06:55:49,763 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nRevolutionary AI Achieves Human-Level Intelligence, Changes Everything'}]
+2025-02-16 06:55:50,067 - INFO - Raw response from generate_reply: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 06:55:50,068 - INFO - Response type: <class 'dict'>
+2025-02-16 06:55:50,068 - INFO - Parsing response: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 06:55:50,068 - INFO - Response is not string, using as is
+2025-02-16 06:55:50,068 - INFO - Extracted data: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 06:55:50,068 - ERROR - Parse error: Missing required fields: {'hype', 'novelty', 'absurdity'}
+2025-02-16 06:55:50,068 - ERROR - Analysis failed: Error parsing response: Missing required fields: {'hype', 'novelty', 'absurdity'}
+Traceback (most recent call last):
+  File "/root/ai-agent/AINewsJohnStewart/agents/scout.py", line 191, in _parse_llm_response
+    raise ValueError(f"Missing required fields: {missing_fields}")
+ValueError: Missing required fields: {'hype', 'novelty', 'absurdity'}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/ai-agent/AINewsJohnStewart/agents/scout.py", line 137, in analyze_article
+    result = self._parse_llm_response(response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/ai-agent/AINewsJohnStewart/agents/scout.py", line 207, in _parse_llm_response
+    raise ValueError(f"Error parsing response: {str(e)}")
+ValueError: Error parsing response: Missing required fields: {'hype', 'novelty', 'absurdity'}
+2025-02-16 06:55:50,128 - INFO - Analyzing headline: Google's AI Makes Breakthrough in Quantum Computing, Claims 100x Speed Increase
+2025-02-16 06:55:50,129 - INFO - Sending messages to Claude: [{'role': 'user', 'content': "Analyze this AI news headline:\nGoogle's AI Makes Breakthrough in Quantum Computing, Claims 100x Speed Increase"}]
+2025-02-16 06:55:50,129 - INFO - Raw response from generate_reply: {
+            "novelty": 8,
+            "hype": 9,
+            "absurdity": 7
+        }
+2025-02-16 06:55:50,129 - INFO - Response type: <class 'str'>
+2025-02-16 06:55:50,129 - INFO - Parsing response: {
+            "novelty": 8,
+            "hype": 9,
+            "absurdity": 7
+        }
+2025-02-16 06:55:50,129 - INFO - Response is string, attempting to extract JSON
+2025-02-16 06:55:50,129 - INFO - Extracted data: {'novelty': 8, 'hype': 9, 'absurdity': 7}
+2025-02-16 06:55:50,129 - INFO - Parsed result: {'novelty': 8, 'hype': 9, 'absurdity': 7}
+2025-02-16 06:56:53,925 - INFO - Analyzing headline: Test Headline
+2025-02-16 06:56:53,926 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nTest Headline'}]
+2025-02-16 06:56:53,926 - ERROR - Analysis failed: API Error
+Traceback (most recent call last):
+  File "/root/ai-agent/AINewsJohnStewart/agents/scout.py", line 129, in analyze_article
+    response = self.generate_reply(messages, sender=None)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+Exception: API Error
+2025-02-16 06:56:53,928 - INFO - Analyzing headline: Revolutionary AI Achieves Human-Level Intelligence, Changes Everything
+2025-02-16 06:56:53,928 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nRevolutionary AI Achieves Human-Level Intelligence, Changes Everything'}]
+2025-02-16 06:56:54,168 - INFO - Raw response from generate_reply: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 06:56:54,168 - INFO - Response type: <class 'dict'>
+2025-02-16 06:56:54,168 - INFO - Parsing response: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 06:56:54,169 - INFO - Extracted data: {'novelty': 3, 'hype': 10, 'absurdity': 9, 'explanation': "This headline employs classic AI hype language ('revolutionary', 'changes everything') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it's a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."}
+2025-02-16 06:56:54,169 - INFO - Parsed result: {'novelty': 3, 'hype': 10, 'absurdity': 9, 'explanation': "This headline employs classic AI hype language ('revolutionary', 'changes everything') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it's a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."}
+2025-02-16 06:56:54,229 - INFO - Analyzing headline: Google's AI Makes Breakthrough in Quantum Computing, Claims 100x Speed Increase
+2025-02-16 06:56:54,229 - INFO - Sending messages to Claude: [{'role': 'user', 'content': "Analyze this AI news headline:\nGoogle's AI Makes Breakthrough in Quantum Computing, Claims 100x Speed Increase"}]
+2025-02-16 06:56:54,229 - INFO - Raw response from generate_reply: {
+            "novelty": 8,
+            "hype": 9,
+            "absurdity": 7
+        }
+2025-02-16 06:56:54,229 - INFO - Response type: <class 'str'>
+2025-02-16 06:56:54,229 - INFO - Parsing response: {
+            "novelty": 8,
+            "hype": 9,
+            "absurdity": 7
+        }
+2025-02-16 06:56:54,229 - INFO - Extracted data: {'novelty': 8, 'hype': 9, 'absurdity': 7}
+2025-02-16 06:56:54,229 - INFO - Parsed result: {'novelty': 8, 'hype': 9, 'absurdity': 7}
+2025-02-16 06:58:37,360 - INFO - Analyzing headline: Test Headline
+2025-02-16 06:58:37,360 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nTest Headline'}]
+2025-02-16 06:58:37,360 - ERROR - Analysis failed: API Error
+Traceback (most recent call last):
+  File "/root/ai-agent/AINewsJohnStewart/agents/scout.py", line 129, in analyze_article
+    response = self.generate_reply(messages, sender=None)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+Exception: API Error
+2025-02-16 06:58:37,362 - INFO - Analyzing headline: Revolutionary AI Achieves Human-Level Intelligence, Changes Everything
+2025-02-16 06:58:37,362 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nRevolutionary AI Achieves Human-Level Intelligence, Changes Everything'}]
+2025-02-16 06:58:37,877 - INFO - Raw response from generate_reply: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 06:58:37,877 - INFO - Response type: <class 'dict'>
+2025-02-16 06:58:37,877 - INFO - Parsing response: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 06:58:37,877 - INFO - Extracted data: {'novelty': 3, 'hype': 10, 'absurdity': 9, 'explanation': "This headline employs classic AI hype language ('revolutionary', 'changes everything') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it's a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."}
+2025-02-16 06:58:37,877 - INFO - Parsed result: {'novelty': 3, 'hype': 10, 'absurdity': 9, 'explanation': "This headline employs classic AI hype language ('revolutionary', 'changes everything') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it's a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."}
+2025-02-16 06:58:37,879 - INFO - Analyzing headline: Major AI Breakthrough in Cancer Research
+2025-02-16 06:58:37,879 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nMajor AI Breakthrough in Cancer Research'}]
+2025-02-16 06:58:40,767 - INFO - Raw response from generate_reply: {'content': '{\n    "novelty": 4,\n    "hype": 8,\n    "absurdity": 3,\n    "explanation": "Generic \'AI breakthrough\' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI\'s impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 06:58:40,767 - INFO - Response type: <class 'dict'>
+2025-02-16 06:58:40,767 - INFO - Parsing response: {'content': '{\n    "novelty": 4,\n    "hype": 8,\n    "absurdity": 3,\n    "explanation": "Generic \'AI breakthrough\' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI\'s impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 06:58:40,767 - INFO - Extracted data: {'novelty': 4, 'hype': 8, 'absurdity': 3, 'explanation': "Generic 'AI breakthrough' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI's impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."}
+2025-02-16 06:58:40,767 - INFO - Parsed result: {'novelty': 4, 'hype': 8, 'absurdity': 3, 'explanation': "Generic 'AI breakthrough' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI's impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."}
+2025-02-16 06:58:40,769 - INFO - Analyzing headline: Google's AI Makes Breakthrough in Quantum Computing, Claims 100x Speed Increase
+2025-02-16 06:58:40,769 - INFO - Sending messages to Claude: [{'role': 'user', 'content': "Analyze this AI news headline:\nGoogle's AI Makes Breakthrough in Quantum Computing, Claims 100x Speed Increase"}]
+2025-02-16 06:58:40,769 - INFO - Raw response from generate_reply: {
+            "novelty": 8,
+            "hype": 9,
+            "absurdity": 7
+        }
+2025-02-16 06:58:40,769 - INFO - Response type: <class 'str'>
+2025-02-16 06:58:40,769 - INFO - Parsing response: {
+            "novelty": 8,
+            "hype": 9,
+            "absurdity": 7
+        }
+2025-02-16 06:58:40,769 - INFO - Extracted data: {'novelty': 8, 'hype': 9, 'absurdity': 7}
+2025-02-16 06:58:40,769 - INFO - Parsed result: {'novelty': 8, 'hype': 9, 'absurdity': 7}
+2025-02-16 07:08:27,552 - INFO - Analyzing headline: Test Headline
+2025-02-16 07:08:27,552 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nTest Headline'}]
+2025-02-16 07:08:27,552 - ERROR - Analysis failed: API Error
+Traceback (most recent call last):
+  File "/root/ai-agent/AINewsJohnStewart/agents/scout.py", line 129, in analyze_article
+    response = self.generate_reply(messages, sender=None)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+Exception: API Error
+2025-02-16 07:08:27,554 - INFO - Analyzing headline: Revolutionary AI Achieves Human-Level Intelligence, Changes Everything
+2025-02-16 07:08:27,554 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nRevolutionary AI Achieves Human-Level Intelligence, Changes Everything'}]
+2025-02-16 07:08:27,712 - INFO - Raw response from generate_reply: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:08:27,713 - INFO - Response type: <class 'dict'>
+2025-02-16 07:08:27,713 - INFO - Parsing response: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:08:27,713 - INFO - Extracted data: {'novelty': 3, 'hype': 10, 'absurdity': 9, 'explanation': "This headline employs classic AI hype language ('revolutionary', 'changes everything') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it's a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."}
+2025-02-16 07:08:27,713 - INFO - Parsed result: {'novelty': 3, 'hype': 10, 'absurdity': 9, 'explanation': "This headline employs classic AI hype language ('revolutionary', 'changes everything') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it's a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."}
+2025-02-16 07:08:27,714 - INFO - Analyzing headline: Major AI Breakthrough in Cancer Research
+2025-02-16 07:08:27,714 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nMajor AI Breakthrough in Cancer Research'}]
+2025-02-16 07:08:27,921 - INFO - Raw response from generate_reply: {'content': '{\n    "novelty": 4,\n    "hype": 8,\n    "absurdity": 3,\n    "explanation": "Generic \'AI breakthrough\' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI\'s impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:08:27,921 - INFO - Response type: <class 'dict'>
+2025-02-16 07:08:27,922 - INFO - Parsing response: {'content': '{\n    "novelty": 4,\n    "hype": 8,\n    "absurdity": 3,\n    "explanation": "Generic \'AI breakthrough\' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI\'s impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:08:27,922 - INFO - Extracted data: {'novelty': 4, 'hype': 8, 'absurdity': 3, 'explanation': "Generic 'AI breakthrough' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI's impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."}
+2025-02-16 07:08:27,922 - INFO - Parsed result: {'novelty': 4, 'hype': 8, 'absurdity': 3, 'explanation': "Generic 'AI breakthrough' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI's impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."}
+2025-02-16 07:08:27,923 - INFO - Analyzing headline: Google's AI Makes Breakthrough in Quantum Computing, Claims 100x Speed Increase
+2025-02-16 07:08:27,923 - INFO - Sending messages to Claude: [{'role': 'user', 'content': "Analyze this AI news headline:\nGoogle's AI Makes Breakthrough in Quantum Computing, Claims 100x Speed Increase"}]
+2025-02-16 07:08:27,923 - INFO - Raw response from generate_reply: {
+            "novelty": 8,
+            "hype": 9,
+            "absurdity": 7
+        }
+2025-02-16 07:08:27,923 - INFO - Response type: <class 'str'>
+2025-02-16 07:08:27,923 - INFO - Parsing response: {
+            "novelty": 8,
+            "hype": 9,
+            "absurdity": 7
+        }
+2025-02-16 07:08:27,923 - INFO - Extracted data: {'novelty': 8, 'hype': 9, 'absurdity': 7}
+2025-02-16 07:08:27,923 - INFO - Parsed result: {'novelty': 8, 'hype': 9, 'absurdity': 7}
+2025-02-16 07:10:14,690 - INFO - Analyzing headline: Test Headline
+2025-02-16 07:10:14,690 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nTest Headline'}]
+2025-02-16 07:10:14,691 - ERROR - Analysis failed: API Error
+Traceback (most recent call last):
+  File "/root/ai-agent/AINewsJohnStewart/agents/scout.py", line 119, in analyze_article
+    response = self.generate_reply(messages, sender=None)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+Exception: API Error
+2025-02-16 07:10:14,693 - INFO - Analyzing headline: Revolutionary AI Achieves Human-Level Intelligence, Changes Everything
+2025-02-16 07:10:14,693 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nRevolutionary AI Achieves Human-Level Intelligence, Changes Everything'}]
+2025-02-16 07:10:14,916 - INFO - Raw response from generate_reply: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:10:14,916 - INFO - Response type: <class 'dict'>
+2025-02-16 07:10:14,916 - INFO - Parsing response: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:10:14,917 - INFO - Extracted data: {'novelty': 3, 'hype': 10, 'absurdity': 9, 'explanation': "This headline employs classic AI hype language ('revolutionary', 'changes everything') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it's a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."}
+2025-02-16 07:10:14,917 - INFO - Parsed result: {'novelty': 3, 'hype': 10, 'absurdity': 9, 'explanation': "This headline employs classic AI hype language ('revolutionary', 'changes everything') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it's a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."}
+2025-02-16 07:10:14,918 - INFO - Analyzing headline: Major AI Breakthrough in Cancer Research
+2025-02-16 07:10:14,918 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nMajor AI Breakthrough in Cancer Research'}]
+2025-02-16 07:10:15,156 - INFO - Raw response from generate_reply: {'content': '{\n    "novelty": 4,\n    "hype": 8,\n    "absurdity": 3,\n    "explanation": "Generic \'AI breakthrough\' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI\'s impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:10:15,156 - INFO - Response type: <class 'dict'>
+2025-02-16 07:10:15,156 - INFO - Parsing response: {'content': '{\n    "novelty": 4,\n    "hype": 8,\n    "absurdity": 3,\n    "explanation": "Generic \'AI breakthrough\' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI\'s impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:10:15,157 - INFO - Extracted data: {'novelty': 4, 'hype': 8, 'absurdity': 3, 'explanation': "Generic 'AI breakthrough' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI's impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."}
+2025-02-16 07:10:15,157 - INFO - Parsed result: {'novelty': 4, 'hype': 8, 'absurdity': 3, 'explanation': "Generic 'AI breakthrough' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI's impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."}
+2025-02-16 07:10:15,158 - INFO - Analyzing headline: Google's AI Makes Breakthrough in Quantum Computing, Claims 100x Speed Increase
+2025-02-16 07:10:15,158 - INFO - Sending messages to Claude: [{'role': 'user', 'content': "Analyze this AI news headline:\nGoogle's AI Makes Breakthrough in Quantum Computing, Claims 100x Speed Increase"}]
+2025-02-16 07:10:15,158 - INFO - Raw response from generate_reply: {
+            "novelty": 8,
+            "hype": 9,
+            "absurdity": 7
+        }
+2025-02-16 07:10:15,158 - INFO - Response type: <class 'str'>
+2025-02-16 07:10:15,158 - INFO - Parsing response: {
+            "novelty": 8,
+            "hype": 9,
+            "absurdity": 7
+        }
+2025-02-16 07:10:15,158 - INFO - Extracted data: {'novelty': 8, 'hype': 9, 'absurdity': 7}
+2025-02-16 07:10:15,158 - INFO - Parsed result: {'novelty': 8, 'hype': 9, 'absurdity': 7}
+2025-02-16 07:10:42,023 - INFO - Analyzing headline: Test Headline
+2025-02-16 07:10:42,023 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nTest Headline'}]
+2025-02-16 07:10:42,024 - ERROR - Analysis failed: API Error
+Traceback (most recent call last):
+  File "/root/ai-agent/AINewsJohnStewart/agents/scout.py", line 118, in analyze_article
+    response = self.generate_reply(messages, sender=None)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+Exception: API Error
+2025-02-16 07:10:42,025 - INFO - Analyzing headline: Revolutionary AI Achieves Human-Level Intelligence, Changes Everything
+2025-02-16 07:10:42,025 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nRevolutionary AI Achieves Human-Level Intelligence, Changes Everything'}]
+2025-02-16 07:10:42,245 - INFO - Raw response from generate_reply: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:10:42,245 - INFO - Response type: <class 'dict'>
+2025-02-16 07:10:42,245 - INFO - Parsing response: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:10:42,245 - INFO - Extracted data: {'novelty': 3, 'hype': 10, 'absurdity': 9, 'explanation': "This headline employs classic AI hype language ('revolutionary', 'changes everything') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it's a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."}
+2025-02-16 07:10:42,245 - INFO - Parsed result: {'novelty': 3, 'hype': 10, 'absurdity': 9, 'explanation': "This headline employs classic AI hype language ('revolutionary', 'changes everything') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it's a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."}
+2025-02-16 07:10:42,247 - INFO - Analyzing headline: Major AI Breakthrough in Cancer Research
+2025-02-16 07:10:42,247 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nMajor AI Breakthrough in Cancer Research'}]
+2025-02-16 07:10:42,537 - INFO - Raw response from generate_reply: {'content': '{\n    "novelty": 4,\n    "hype": 8,\n    "absurdity": 3,\n    "explanation": "Generic \'AI breakthrough\' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI\'s impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:10:42,537 - INFO - Response type: <class 'dict'>
+2025-02-16 07:10:42,537 - INFO - Parsing response: {'content': '{\n    "novelty": 4,\n    "hype": 8,\n    "absurdity": 3,\n    "explanation": "Generic \'AI breakthrough\' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI\'s impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:10:42,537 - INFO - Extracted data: {'novelty': 4, 'hype': 8, 'absurdity': 3, 'explanation': "Generic 'AI breakthrough' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI's impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."}
+2025-02-16 07:10:42,538 - INFO - Parsed result: {'novelty': 4, 'hype': 8, 'absurdity': 3, 'explanation': "Generic 'AI breakthrough' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI's impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."}
+2025-02-16 07:10:42,539 - INFO - Analyzing headline: Google's AI Makes Breakthrough in Quantum Computing, Claims 100x Speed Increase
+2025-02-16 07:10:42,539 - INFO - Sending messages to Claude: [{'role': 'user', 'content': "Analyze this AI news headline:\nGoogle's AI Makes Breakthrough in Quantum Computing, Claims 100x Speed Increase"}]
+2025-02-16 07:10:42,539 - INFO - Raw response from generate_reply: {
+            "novelty": 8,
+            "hype": 9,
+            "absurdity": 7
+        }
+2025-02-16 07:10:42,539 - INFO - Response type: <class 'str'>
+2025-02-16 07:10:42,539 - INFO - Parsing response: {
+            "novelty": 8,
+            "hype": 9,
+            "absurdity": 7
+        }
+2025-02-16 07:10:42,539 - INFO - Extracted data: {'novelty': 8, 'hype': 9, 'absurdity': 7}
+2025-02-16 07:10:42,539 - INFO - Parsed result: {'novelty': 8, 'hype': 9, 'absurdity': 7}
+2025-02-16 07:18:53,682 - ERROR - Script generation failed: expected string or bytes-like object, got 'dict'
+2025-02-16 07:18:53,683 - ERROR - Script generation failed: API Error
+2025-02-16 07:18:53,685 - WARNING - Output validation failed: 'NoneType' object has no attribute 'group'
+2025-02-16 07:18:53,686 - ERROR - Script generation failed: expected string or bytes-like object, got 'dict'
+2025-02-16 07:18:53,687 - ERROR - Script generation failed: expected string or bytes-like object, got 'dict'
+2025-02-16 07:18:53,744 - ERROR - Script generation failed: expected string or bytes-like object, got 'dict'
+2025-02-16 07:19:46,733 - ERROR - Script generation failed: Banned topic detected: violence
+2025-02-16 07:19:46,735 - ERROR - Script generation failed: API Error
+2025-02-16 07:19:46,737 - WARNING - Output validation failed: 'NoneType' object has no attribute 'group'
+2025-02-16 07:19:46,737 - ERROR - Script generation failed: Missing required script sections
+2025-02-16 07:19:57,171 - INFO - Analyzing headline: Test Headline
+2025-02-16 07:19:57,171 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nTest Headline'}]
+2025-02-16 07:19:57,171 - ERROR - Analysis failed: API Error
+Traceback (most recent call last):
+  File "/root/ai-agent/AINewsJohnStewart/agents/scout.py", line 118, in analyze_article
+    response = self.generate_reply(messages, sender=None)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1139, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1143, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1198, in _execute_mock_call
+    raise effect
+Exception: API Error
+2025-02-16 07:19:57,173 - INFO - Analyzing headline: Revolutionary AI Achieves Human-Level Intelligence, Changes Everything
+2025-02-16 07:19:57,173 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nRevolutionary AI Achieves Human-Level Intelligence, Changes Everything'}]
+2025-02-16 07:19:57,473 - INFO - Raw response from generate_reply: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:19:57,474 - INFO - Response type: <class 'dict'>
+2025-02-16 07:19:57,474 - INFO - Parsing response: {'content': '{\n    "novelty": 3,\n    "hype": 10,\n    "absurdity": 9,\n    "explanation": "This headline employs classic AI hype language (\'revolutionary\', \'changes everything\') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it\'s a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:19:57,474 - INFO - Extracted data: {'novelty': 3, 'hype': 10, 'absurdity': 9, 'explanation': "This headline employs classic AI hype language ('revolutionary', 'changes everything') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it's a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."}
+2025-02-16 07:19:57,474 - INFO - Parsed result: {'novelty': 3, 'hype': 10, 'absurdity': 9, 'explanation': "This headline employs classic AI hype language ('revolutionary', 'changes everything') while making an unsubstantiated claim about human-level intelligence. Such claims have been repeatedly made over decades. The novelty is low since it's a common type of sensationalist AI headline. The hype level is maximum as it suggests a complete paradigm shift without specifics. The absurdity is very high because achieving human-level general intelligence remains a distant goal - no current AI system comes close to human-level cognition across all domains."}
+2025-02-16 07:19:57,475 - INFO - Analyzing headline: Major AI Breakthrough in Cancer Research
+2025-02-16 07:19:57,475 - INFO - Sending messages to Claude: [{'role': 'user', 'content': 'Analyze this AI news headline:\nMajor AI Breakthrough in Cancer Research'}]
+2025-02-16 07:19:57,717 - INFO - Raw response from generate_reply: {'content': '{\n    "novelty": 4,\n    "hype": 8,\n    "absurdity": 3,\n    "explanation": "Generic \'AI breakthrough\' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI\'s impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:19:57,718 - INFO - Response type: <class 'dict'>
+2025-02-16 07:19:57,718 - INFO - Parsing response: {'content': '{\n    "novelty": 4,\n    "hype": 8,\n    "absurdity": 3,\n    "explanation": "Generic \'AI breakthrough\' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI\'s impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."\n}', 'refusal': None, 'role': 'assistant', 'audio': None, 'function_call': None, 'tool_calls': None}
+2025-02-16 07:19:57,718 - INFO - Extracted data: {'novelty': 4, 'hype': 8, 'absurdity': 3, 'explanation': "Generic 'AI breakthrough' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI's impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."}
+2025-02-16 07:19:57,718 - INFO - Parsed result: {'novelty': 4, 'hype': 8, 'absurdity': 3, 'explanation': "Generic 'AI breakthrough' headlines in medical research are common, hence lower novelty score. The hype score is high as media often overstates AI's impact in healthcare without specific details. Absurdity is moderate - while AI can assist in cancer research, breakthroughs typically require extensive validation and are rarely as dramatic as headlines suggest."}
+2025-02-16 07:19:57,719 - INFO - Analyzing headline: Google's AI Makes Breakthrough in Quantum Computing, Claims 100x Speed Increase
+2025-02-16 07:19:57,719 - INFO - Sending messages to Claude: [{'role': 'user', 'content': "Analyze this AI news headline:\nGoogle's AI Makes Breakthrough in Quantum Computing, Claims 100x Speed Increase"}]
+2025-02-16 07:19:57,719 - INFO - Raw response from generate_reply: {
+            "novelty": 8,
+            "hype": 9,
+            "absurdity": 7
+        }
+2025-02-16 07:19:57,719 - INFO - Response type: <class 'str'>
+2025-02-16 07:19:57,719 - INFO - Parsing response: {
+            "novelty": 8,
+            "hype": 9,
+            "absurdity": 7
+        }
+2025-02-16 07:19:57,719 - INFO - Extracted data: {'novelty': 8, 'hype': 9, 'absurdity': 7}
+2025-02-16 07:19:57,720 - INFO - Parsed result: {'novelty': 8, 'hype': 9, 'absurdity': 7}
