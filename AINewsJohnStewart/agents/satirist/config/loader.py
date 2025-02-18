@@ -1,4 +1,5 @@
-from typing import Any, Dict, List
+from enum import Enum
+from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field, field_validator
 import yaml
 from pathlib import Path
@@ -18,32 +19,15 @@ class ValidationConfig(BaseModel):
     section_length_limits: SectionLengthLimits
 
 class FallbackMetadata(BaseModel):
-    error_context_template: str = Field(
-        default="Error occurred: {{ error_message }}",
-        description="Template for error context"
-    )
-    fallback_type: str = Field(
-        default="graceful_recovery",
-        description="Type of fallback response"
-    )
-    style_elements: Dict[str, bool] = Field(
-        default={
-            "ai_reference": True,
-            "tech_criticism": True,
-            "self_awareness": True,
-            "skynet_reference": True
-        },
-        description="Required style elements for fallback"
-    )
-    current_fiasco: str = Field(
-        default="the latest Silicon Valley AI startup's attempt to revolutionize toast",
-        description="Current tech industry context for jokes"
-    )
+    error_context_template: str
+    fallback_type: str
+    style_elements: Dict[str, bool]
 
 class StyleGuide(BaseModel):
     banned_topics: List[str]
     required_elements: List[str]
     max_joke_density: float
+    joke_density_tolerance: float
     voice: str
     tone_options: List[str]
     structure: List[str]
@@ -54,13 +38,20 @@ class TemplateConfig(BaseModel):
     lstrip_blocks: bool
     required_sections: List[str]
 
+class ToneEnum(str, Enum):
+    SARCASTIC = 'sarcastic'
+    IRONIC = 'ironic'
+    WITTY = 'witty'
+    SATIRICAL = 'satirical'
+    SELF_DEPRECATING = 'self-deprecating'
+
 class Script(BaseModel):
     script: List[Dict[str, Any]] = Field(..., description="List of script segments")
-    tone: str = Field(..., description="Overall tone of the script")
+    tone: ToneEnum
+    metadata: Optional[Dict[str, Any]] = Field(default=None, description="Optional metadata about the script")
     
     @field_validator("script")
     def validate_links(cls, v):
-        # Verify callback references exist
         callback_refs = [s.get("references") 
                        for s in v if s["type"] == "callback"]
         existing = {s["type"] for s in v}
@@ -71,21 +62,13 @@ class Script(BaseModel):
                 raise ValueError(f"Callback references missing: {missing}")
         return v
     
-    @field_validator("tone")
-    def validate_tone(cls, v):
-        valid_tones = {"sarcastic", "serious", "absurd"}
-        if v not in valid_tones:
-            raise ValueError(f"Invalid tone: {v}. Must be one of {valid_tones}")
-        return v
+    class Config:
+        extra = "allow"
     
 class FallbackConfig(BaseModel):
     script: List[Dict]
     tone: str
     metadata: FallbackMetadata
-    retry_attempts: int
-    retry_max_wait: int
-    retry_multiplier: int
-    max_length: int
 
 class ScriptSettings(BaseModel):
     format_example: Script

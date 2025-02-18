@@ -40,6 +40,8 @@ class Settings(BaseSettings):
             "config_list": [{
                 "model": self.ANTHROPIC_MODEL,
                 "api_key": self.ANTHROPIC_API_KEY,
+                "api_base": "https://api.anthropic.com/v1/messages",
+                "api_type": "anthropic",
                 "max_tokens": 1500,
                 "temperature": 0.7,  # More creative
             }],

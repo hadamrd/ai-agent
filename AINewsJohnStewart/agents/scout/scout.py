@@ -4,7 +4,7 @@ import requests
 from typing import List, Dict, Union
 from tenacity import retry, stop_after_attempt, wait_exponential
 from AINewsJohnStewart.utils.logger import setup_logger
-from AINewsJohnStewart.utils.settings import settings
+from AINewsJohnStewart.boot.settings import settings
 from functools import lru_cache
 import re
 

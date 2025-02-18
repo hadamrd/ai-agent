@@ -26,4 +26,11 @@ Required elements:
 
 Maximum joke density: {{ style_guide.max_joke_density }} jokes per token
 
-FORMAT: JSON schema-compliant
+IMPORTANT: Wrap your response in <script_json> tags and ensure it contains only valid JSON. Example:
+<script_json>
+{
+  "script": [...],
+  "tone": "...",
+  "metadata": {...}
+}
+</script_json>

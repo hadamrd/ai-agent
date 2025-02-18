@@ -46,3 +46,7 @@ nosetests.xml
 coverage.xml
 *.cover
 *.py,cover
+**/*.log
+.cache
+test_reports/
+coverage_reports/
