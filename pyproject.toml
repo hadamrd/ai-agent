@@ -3,7 +3,10 @@ name = "AINewsJohnStewart"
 version = "0.1.0"
 description = "AI-powered news satire generator"
 authors = ["Your Name <your.email@example.com>"]
-packages = [{include = "AINewsJohnStewart"}]
+packages = [
+    {include = "AINewsJohnStewart"},
+    {include = "scripts"}
+]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.14"
@@ -21,19 +24,53 @@ PyYAML = "^6.0.1"
 pytest = "^7.4.0"
 pytest-cov = "^4.1.0"
 pytest-mock = "^3.11.1"
+pytest-xdist = "^3.3.1"  # For parallel test execution
+pytest-sugar = "^0.9.7"  # For better test progress visualization
+pytest-timeout = "^2.1.0"  # For handling hanging tests
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-test-satirist = "scripts:run_satirist_tests"
+test = "scripts.test_runner:main"
+test-unit = "scripts.test_runner:run_unit_tests"
+test-integration = "scripts.test_runner:run_integration_tests"
+test-all = "scripts.test_runner:run_all_tests"
 
 [tool.pytest.ini_options]
 testpaths = ["AINewsJohnStewart/tests"]
-python_files = "test_*.py"
-addopts = "-v --cov=AINewsJohnStewart/agents/satirist --cov-report=term-missing"
+python_files = ["test_*.py", "*_test.py"]
+addopts = """
+    -v
+    --strict-markers
+    --tb=short
+    --cov=AINewsJohnStewart
+    --cov-report=term-missing
+    --cov-report=html:coverage_reports/html
+    --junitxml=test_reports/junit.xml
+"""
+markers = [
+    "unit: mark test as a unit test",
+    "integration: mark test as an integration test",
+    "satirist: tests for the satirist agent",
+    "slow: mark test as slow running",
+]
 pythonpath = ["."]
+
+[tool.coverage.run]
+source = ["AINewsJohnStewart"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise ImportError",
+]
 
 [tool.autogen]
 llm_cache_path = "./data/llm_cache.db"

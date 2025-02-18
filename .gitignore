@@ -48,3 +48,5 @@ coverage.xml
 *.py,cover
 **/*.log
 .cache
+test_reports/
+coverage_reports/

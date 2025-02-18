@@ -1,6 +1,7 @@
 from datetime import datetime
 import logging
 import os
+import re
 from autogen import AssistantAgent
 from typing import List, Dict
 from tenacity import retry, stop_after_attempt, wait_random_exponential
@@ -67,7 +68,9 @@ class SatiristAgent(AssistantAgent):
             self._validate_input(articles)
             prompt = self._build_prompt(articles)
             raw_response = self.generate_reply([{"content": prompt, "role": "user"}])
-            return self._validate_output(raw_response)
+            logger.info(f"Script generated successfully: {raw_response}")
+            validated_response = self._validate_output(raw_response)
+            return validated_response
         except Exception as e:
             logger.error(f"Script generation failed: {str(e)}")
             return self._fallback_script(str(e))
@@ -86,32 +89,64 @@ class SatiristAgent(AssistantAgent):
             if missing_fields:
                 raise ValueError(f"Missing required fields: {missing_fields}")
     
-    def _validate_output(self, raw: str) -> Dict:
-        """Validate and parse the generated script"""
+    def _validate_output(self, response: Dict) -> Dict:
+        """Validate and parse the script output using XML-style tags."""
         try:
-            cleaned = raw.replace("```json", "").replace("```", "").strip()
-            data = json.loads(cleaned)
-            return Script(**data).model_dump()
+            # Extract content from the response
+            content = response.get('content', '')
+            if not isinstance(content, str):
+                raise ValueError(f"Expected string content, got {type(content)}")
+                
+            # Extract content between script_json tags
+            pattern = r'<script_json>(.*?)</script_json>'
+            match = re.search(pattern, content, re.DOTALL)
+            
+            if not match:
+                raise ValueError("No <script_json> tags found in response")
+                
+            # Get the JSON content from between the tags
+            json_content = match.group(1).strip()
+            
+            # Parse the JSON
+            data = json.loads(json_content)
+            
+            # Validate required fields
+            required_fields = {'script', 'tone', 'metadata'}
+            if not all(field in data for field in required_fields):
+                missing = required_fields - set(data.keys())
+                raise ValueError(f"Missing required fields: {missing}")
+                
+            return data
+            
         except json.JSONDecodeError as e:
             raise ValueError(f"Invalid JSON in script: {str(e)}")
         except Exception as e:
-            raise ValueError(f"Invalid script format: {str(e)}")
-
+            raise ValueError(f"Validation error: {str(e)}")
+    
     def _fallback_script(self, error_message: str) -> Dict:
         """Generate fallback script using config"""
         try:
+            # Get base metadata from config
+            base_metadata = config.script_settings.fallback.metadata.model_dump()
+            
+            # Add runtime metadata
+            metadata = {
+                **base_metadata,
+                "error_message": error_message,
+                "current_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "is_fallback": True  # Add is_fallback flag
+            }
+            
             script_data = {
                 "script": config.script_settings.fallback.script,
                 "tone": config.script_settings.fallback.tone,
-                "metadata": {
-                    **config.script_settings.fallback.metadata.model_dump(),
-                    "error_message": error_message,
-                    "current_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                }
+                "metadata": metadata
             }
             
-            return Script(**script_data).model_dump()
-                
+            # Use Script model for validation
+            validated_script = Script(**script_data)
+            return validated_script.model_dump()
+                    
         except Exception as e:
             logger.error(f"Critical error in fallback script generation: {str(e)}")
             raise RuntimeError("Failed to generate fallback script") from e
