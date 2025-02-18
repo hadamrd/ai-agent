@@ -18,32 +18,15 @@ class ValidationConfig(BaseModel):
     section_length_limits: SectionLengthLimits
 
 class FallbackMetadata(BaseModel):
-    error_context_template: str = Field(
-        default="Error occurred: {{ error_message }}",
-        description="Template for error context"
-    )
-    fallback_type: str = Field(
-        default="graceful_recovery",
-        description="Type of fallback response"
-    )
-    style_elements: Dict[str, bool] = Field(
-        default={
-            "ai_reference": True,
-            "tech_criticism": True,
-            "self_awareness": True,
-            "skynet_reference": True
-        },
-        description="Required style elements for fallback"
-    )
-    current_fiasco: str = Field(
-        default="the latest Silicon Valley AI startup's attempt to revolutionize toast",
-        description="Current tech industry context for jokes"
-    )
+    error_context_template: str
+    fallback_type: str
+    style_elements: Dict[str, bool]
 
 class StyleGuide(BaseModel):
     banned_topics: List[str]
     required_elements: List[str]
     max_joke_density: float
+    joke_density_tolerance: float
     voice: str
     tone_options: List[str]
     structure: List[str]
@@ -82,10 +65,6 @@ class FallbackConfig(BaseModel):
     script: List[Dict]
     tone: str
     metadata: FallbackMetadata
-    retry_attempts: int
-    retry_max_wait: int
-    retry_multiplier: int
-    max_length: int
 
 class ScriptSettings(BaseModel):
     format_example: Script

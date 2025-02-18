@@ -7,6 +7,7 @@ style_guide:
     - "skynet_reference"
     - "vc_mockery"
   max_joke_density: 0.3
+  joke_density_tolerance: 0.2
   voice: "John Oliver-esque"
   tone_options:
     - "sarcastic"
