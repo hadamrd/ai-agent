@@ -6,6 +6,7 @@ from typing import List, Dict
 from tenacity import retry, stop_after_attempt, wait_random_exponential
 from AINewsJohnStewart.agents.scout.config.loader import ConfigLoader
 from AINewsJohnStewart.agents.scout.models import ArticleBrief
+from AINewsJohnStewart.agents.scout.news_client import NewsAPIClient
 from AINewsJohnStewart.boot.jinja import create_env
 from AINewsJohnStewart.utils.logger import setup_logger
 from AINewsJohnStewart.boot.settings import settings
@@ -31,6 +32,7 @@ class Debriefer(AssistantAgent):
         )
         self.session = requests.Session()
         self.session.headers.update({'User-Agent': 'AINewsBot/1.0'})
+        self.news_client = NewsAPIClient()
 
     def _load_system_message(self) -> str:
         """Load system message from template"""
@@ -39,23 +41,39 @@ class Debriefer(AssistantAgent):
         )
 
     def _process_articles(self, raw_articles: List[Dict]) -> List[ArticleBrief]:
-        """Sanitize and enrich articles"""
+        """Sanitize and enrich articles with full content before analysis"""
         processed = []
         for article in raw_articles[:10]:  # Limit to 10 for cost control
             try:
-                biref = self.analyze_article(article['title'])
-                processed.append(biref)
+                # First get the full content
+                url = article.get('url')
+                if not url:
+                    logger.warning(f"Skipping article with no URL: {article.get('title')}")
+                    continue
+
+                content = self.news_client._fetch_article_content(url)
+                if not content:
+                    logger.warning(f"Could not fetch content for: {url}")
+                    continue
+
+                # Add full content to article
+                article['content'] = content
+
+                # Now analyze with full content
+                brief = self.analyze_article(article)
+                processed.append(brief)
+                
             except Exception as e:
-                logger.error(f"Analysis failed: {str(e)}")
+                logger.error(f"Analysis failed for {article.get('title')}: {str(e)}")
                 
         return processed
 
     def _build_analysis_prompt(self, article: Dict) -> str:
-        """Generate prompt using template"""
+        """Generate prompt using template with full content"""
         template = template_env.get_template('analysis_prompt.j2')
         return template.render(
             article=article.get('title', ''),
-            content=article.get('content', ''),
+            content=article.get('content', ''),  # This will now be the full content
         )
 
     @retry(

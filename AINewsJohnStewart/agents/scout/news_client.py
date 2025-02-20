@@ -1,8 +1,11 @@
 from typing import Dict, List, Optional
+from urllib.parse import urlparse
 import requests
 from tenacity import retry, stop_after_attempt, wait_exponential
+import trafilatura
 from AINewsJohnStewart.utils.logger import setup_logger
 from AINewsJohnStewart.boot.settings import settings
+from bs4 import BeautifulSoup
 
 logger = setup_logger(__name__)
 
@@ -128,6 +131,53 @@ class NewsAPIClient:
             logger.error(f"Invalid JSON response: {str(e)}")
             raise NewsAPIError(f"Invalid response format: {str(e)}")
 
+    def _fetch_article_content(self, url: str) -> Optional[str]:
+        """
+        Fetch and extract article content from URL
+        Uses trafilatura for better content extraction
+        Falls back to BeautifulSoup if needed
+        """
+        try:
+            # Try to get the page content
+            response = self.session.get(
+                url,
+                timeout=10,
+                headers={
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                }
+            )
+            response.raise_for_status()
+            
+            # First try trafilatura
+            content = trafilatura.extract(
+                response.text,
+                include_comments=False,
+                include_tables=False
+            )
+            
+            # If trafilatura fails, try BeautifulSoup
+            if not content:
+                soup = BeautifulSoup(response.text, 'html.parser')
+                
+                # Remove unwanted elements
+                for tag in soup(['script', 'style', 'nav', 'header', 'footer', 'aside']):
+                    tag.decompose()
+                
+                # Try to find main content
+                article = soup.find('article') or soup.find(class_=lambda x: x and ('article' in x.lower() or 'content' in x.lower()))
+                if article:
+                    content = article.get_text(separator='\n', strip=True)
+                else:
+                    content = soup.get_text(separator='\n', strip=True)
+            else:
+                print("Trafilatura worked!")
+            
+            return content.strip() if content else None
+            
+        except Exception as e:
+            logger.error(f"Error fetching {url}: {str(e)}")
+            return None
+        
 class NewsAPIError(Exception):
     """Custom exception for NewsAPI errors"""
     pass
@@ -153,7 +203,95 @@ class NewsAPIRateLimiter:
             logger.error(f"NewsAPI rate limit exceeded. Resets at: {reset_time}")
             raise NewsAPIError("Rate limit exceeded")
 
+SKIP_DOMAINS = [
+    # Major Paywalls
+    'wsj.com',
+    'ft.com',
+    'nytimes.com',
+    'bloomberg.com',
+    'reuters.com',
+    'economist.com',
+    'forbes.com',
+    'barrons.com',
+    'businessinsider.com',
+    'seekingalpha.com',
+    'hbr.org',  # Harvard Business Review
+    
+    # Yahoo Family (Consent Issues)
+    'yahoo.com',
+    'finance.yahoo.com',
+    'news.yahoo.com',
+    
+    # Strong Anti-Bot Measures
+    'medium.com',
+    'towardsdatascience.com',  # Medium publication
+    'venturebeat.com',
+    'techcrunch.com',
+    'wired.com',
+    'cnet.com',
+    'zdnet.com',
+    
+    # Cookie/GDPR Walls
+    'theverge.com',
+    'engadget.com',
+    'gizmodo.com',
+    'mashable.com',
+    'telegraph.co.uk',
+    'independent.co.uk',
+    'thetimes.co.uk',
+    
+    # Complex JavaScript Requirements
+    'insider.com',
+    'marketwatch.com',
+    'cnbc.com',
+    'theregister.com',
+    'arstechnica.com',
+    
+    # Regional Paywalls
+    'latimes.com',
+    'washingtonpost.com',
+    'sfchronicle.com',
+    'chicagotribune.com',
+    'scmp.com'  # South China Morning Post
+]
+    
 if __name__ == "__main__":
     client = NewsAPIClient()
-    articles = client.get_everything("artificial intelligence")
-    print(articles)
+    
+    # First get the articles
+    articles = client.get_everything(
+        query="artificial intelligence",
+        page_size=10,  # Get more since we'll skip some
+        sort_by="popularity",
+        exclude_domains=SKIP_DOMAINS
+    )
+    
+    print("\nFound articles:")
+    for idx, article in enumerate(articles.get('articles', []), 1):
+        url = article.get('url', 'No URL')
+        domain = urlparse(url).netloc if url != 'No URL' else 'No domain'
+        print(f"{idx}. {article['title']}")
+        print(f"   Source: {domain}")
+        print(f"   URL: {url}")
+        print()
+    
+    # Try articles until we successfully fetch content
+    for article in articles.get('articles', []):
+        url = article.get('url')
+        if not url:
+            continue
+            
+        domain = urlparse(url).netloc
+        if domain in SKIP_DOMAINS:
+            print(f"Skipping {domain} (known paywall/restrictions)")
+            continue
+            
+        print(f"\nAttempting to fetch: {article['title']}")
+        content = client._fetch_article_content(url)
+        if content:
+            print("\nSuccessfully fetched content:")
+            print("=" * 50)
+            print(content[:2000] + "..." if len(content) > 500 else content)
+            break
+        else:
+            print(f"Failed to fetch content from {domain}, trying next article...")
