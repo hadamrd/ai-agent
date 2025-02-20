@@ -1,12 +1,15 @@
 import logging  
-from logging.handlers import RotatingFileHandler  
+from logging.handlers import RotatingFileHandler
+
+from AINewsJohnStewart.boot.settings import settings
 
 def setup_logger(name):  
     logger = logging.getLogger(name)  
     logger.setLevel(logging.INFO)  
+    log_file = settings.AI_AGENTS_LOGS_DIR / "ai_news.log"
     
     handler = RotatingFileHandler(  
-        "AINewsJohnStewart/logs/ai_news.log",  
+        log_file,  
         maxBytes=1e6,  # 1MB logs  
         backupCount=3  
     )  

@@ -46,11 +46,14 @@ class SatiristAgent(AssistantAgent):
             config=config.model_dump()
         )
 
-    def _build_prompt(self, articles: List[Dict]) -> str:
+    def _build_prompt(self, briefs: List[Dict]) -> str:
         """Generate prompt using template"""
         template = template_env.get_template('script_prompt.j2')
+        # Sort by comedy potential
+        briefs.sort(key=lambda x: x.comedy_potential.absurdity_score, reverse=True)
         return template.render(
-            headlines=[a['title'] for a in articles[:5]],
+            headlines=[b.title for b in briefs],
+            briefs=briefs,  # Pass the full briefs
             style_guide=config.style_guide.model_dump(),
             max_length=2
         )

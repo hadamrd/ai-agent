@@ -1,15 +1,29 @@
 Create {{ max_length }}-minute satirical news script about these AI developments:
 
-Headlines:
-{% for headline in headlines %}
-- {{ headline }}
+Stories to Cover:
+{% for brief in briefs %}
+Story {{ loop.index }}: {{ brief.title }}
+- Key Points: {{ brief.key_points|join(', ') }}
+- Main Players: {{ brief.main_players|join(', ') }}
+
+Comedic Elements:
+- Absurdity Level: {{ brief.comedy_potential.absurdity_score }}/10
+- Mockable Buzzwords: {{ brief.comedy_potential.tech_buzzwords|join(', ') }}
+- Exaggerated Claims: {{ brief.comedy_potential.exaggerations|join(', ') }}
+- Numbers Worth Mocking: 
+{% for num in brief.comedy_potential.numbers_to_mock %}
+  * {{ num.value }} ({{ num.context }})
 {% endfor %}
 
-INSTRUCTIONS:
-1. Opening joke about AI safety researchers
-2. Compare one project to Black Mirror episode
-3. Mock investment figures using animal analogies
-4. Closing joke referencing {{ tech_fiasco }}
+Potential Hooks:
+- Pop Culture: {{ brief.comedy_potential.pop_culture_hooks|join(', ') }}
+- Callback Material: {{ brief.comedy_potential.callback_hooks|join(', ') }}
+
+Quotable Quotes:
+{% for quote in brief.quotable_quotes %}
+- "{{ quote }}"
+{% endfor %}
+{% endfor %}
 
 AVOID:
 {% for topic in style_guide.banned_topics %}

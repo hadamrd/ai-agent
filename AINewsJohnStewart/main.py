@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from autogen import GroupChat, GroupChatManager
-from AINewsJohnStewart.agents.scout.scout import ScoutAgent
+from AINewsJohnStewart.agents.scout.debriefer import ScoutAgent
 from AINewsJohnStewart.agents.satirist.satirist import SatiristAgent
 from AINewsJohnStewart.utils.logger import setup_logger
 

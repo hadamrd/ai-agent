@@ -28,6 +28,10 @@ pytest-xdist = "^3.3.1"  # For parallel test execution
 pytest-sugar = "^0.9.7"  # For better test progress visualization
 pytest-timeout = "^2.1.0"  # For handling hanging tests
 
+
+[tool.poetry.group.dev.dependencies]
+rich = "^13.9.4"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

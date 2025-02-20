@@ -1,5 +1,6 @@
 from functools import lru_cache
-from pydantic import PositiveInt, field_validator
+from pathlib import Path
+from pydantic import DirectoryPath, PositiveInt, field_validator
 from typing import Optional, Dict, List
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -17,6 +18,8 @@ class Settings(BaseSettings):
     # Budget Controls
     MAX_TOKENS_PER_RUN: PositiveInt = 50_000
     ENABLE_COST_LIMITS: bool = True
+    # Logging Configuration
+    AI_AGENTS_LOGS_DIR: DirectoryPath = Path("logs")
     
     # Predefined Model Configurations
     @property
